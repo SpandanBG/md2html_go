@@ -8,14 +8,17 @@ func isEqual[T comparable](t *testing.T, a, b T) {
   }
 }
 
-func TestHello(t *testing.T) {
-  response := hello()
-
-  isEqual[string](t, response, "Hello, world")
+func isNotNil[T comparable](t *testing.T, a T) {
+  var nilVaue T
+  if a == nilVaue {
+    t.Fatal(a, " is not nil ")
+  }
 }
 
-func TestParagraph(t *testing.T) {
-  result := ToParagraph("hello, world")
+func TestNewMarkdown(t *testing.T) {
+  testfileName := "hello.md"
 
-  isEqual[string](t, result, "<p>hello, world</p>")
+  result := NewMarkdown(testfileName)
+
+  isNotNil[*Markdown](t, &result)
 }

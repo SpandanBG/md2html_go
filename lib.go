@@ -1,13 +1,13 @@
 package md2htmlgo
 
 import (
-  "fmt"
+  "sudocoding.xyz/md2html_go/common"
 )
 
-func hello() string {
-  return "Hello, world"
+type Markdown struct {
+  Components []common.MDComponent
 }
 
-func ToParagraph(md_string string) string {
-  return fmt.Sprintf("<p>%s</p>", md_string)
+func NewMarkdown(filename string) Markdown {
+  return Markdown{}
 }
