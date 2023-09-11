@@ -30,3 +30,12 @@ func TestToHMTLString(t *testing.T) {
 
 	isEqual[string](t, htmlStr, mdStr)
 }
+
+func TestToHMTLStringWithEscapedChars(t *testing.T) {
+	mdStr := "&\"'<>"
+	regulartext := ExtractRegularText(mdStr)
+
+	htmlStr := regulartext.ToHTMLString()
+
+	isEqual[string](t, htmlStr, "&amp;&quot;&#39;&lt;&gt;")
+}
