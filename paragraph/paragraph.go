@@ -1,10 +1,17 @@
 package paragraph
 
 import (
+	"fmt"
 	"strings"
 
 	"sudocoding.xyz/md2html_go/common"
 	"sudocoding.xyz/md2html_go/richtext"
+)
+
+const (
+	openingTag         = "<p>"
+	closingTag         = "</p>"
+	defaultPlaceholder = "%s%s%s"
 )
 
 type Paragraph struct {
@@ -28,5 +35,5 @@ func (p *Paragraph) ToHTMLString() string {
 		s.WriteString(comp.ToHTMLString())
 	}
 
-	return s.String()
+	return fmt.Sprintf(defaultPlaceholder, openingTag, s.String(), closingTag)
 }

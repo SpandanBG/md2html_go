@@ -27,7 +27,7 @@ func TestToHTMLString(t *testing.T) {
 
 	htmlStr := para.ToHTMLString()
 
-	isEqual[string](t, htmlStr, "")
+	isEqual[string](t, htmlStr, "<p></p>")
 }
 
 func TestParagraphMD(t *testing.T) {
@@ -36,5 +36,5 @@ func TestParagraphMD(t *testing.T) {
 
 	htmlStr := para.ToHTMLString()
 
-	isEqual[string](t, htmlStr, mdStr)
+	isEqual[string](t, htmlStr, "<p>hello, world</p>")
 }

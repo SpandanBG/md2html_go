@@ -2,6 +2,7 @@ package md2htmlgo
 
 import (
 	"os"
+	"strings"
 
 	"sudocoding.xyz/md2html_go/common"
 	"sudocoding.xyz/md2html_go/paragraph"
@@ -17,7 +18,7 @@ func NewMarkdownFromFile(filename string) (Markdown, error) {
 		return Markdown{}, err
 	}
 
-	content := string(file)
+	content := strings.TrimSpace(string(file))
 
 	para := paragraph.ExtractParagraph(content)
 
@@ -26,4 +27,14 @@ func NewMarkdownFromFile(filename string) (Markdown, error) {
 			&para,
 		},
 	}, nil
+}
+
+func (md *Markdown) ToHTMLString() string {
+	var s strings.Builder
+
+	for _, comp := range md.Components {
+		s.WriteString(comp.ToHTMLString())
+	}
+
+	return s.String()
 }
