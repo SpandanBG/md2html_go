@@ -29,3 +29,12 @@ func TestToHTMLString(t *testing.T) {
 
 	isEqual[string](t, htmlStr, "")
 }
+
+func TestParagraphMD(t *testing.T) {
+	mdStr := "hello, world"
+	para := ExtractParagraph(mdStr)
+
+	htmlStr := para.ToHTMLString()
+
+	isEqual[string](t, htmlStr, mdStr)
+}

@@ -23,9 +23,10 @@ func isNotNil[T comparable](t *testing.T, a T) {
 }
 
 func TestNewMarkdown(t *testing.T) {
-	testfileName := "hello.md"
+	testfileName := "examples/hello_world.md"
 
-	result := NewMarkdown(testfileName)
+	result, err := NewMarkdownFromFile(testfileName)
 
+	isNil[error](t, err)
 	isNotNil[*Markdown](t, &result)
 }
