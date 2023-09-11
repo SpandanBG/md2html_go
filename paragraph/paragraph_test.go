@@ -1,4 +1,4 @@
-package md2htmlgo
+package paragraph
 
 import "testing"
 
@@ -22,10 +22,10 @@ func isNotNil[T comparable](t *testing.T, a T) {
   }
 }
 
-func TestNewMarkdown(t *testing.T) {
-  testfileName := "hello.md"
+func TestToHTMLString(t *testing.T) {
+  para := Paragraph{}
 
-  result := NewMarkdown(testfileName)
+  htmlStr := para.ToHTMLString()
 
-  isNotNil[*Markdown](t, &result)
+  isEqual[string](t, htmlStr, "")
 }
