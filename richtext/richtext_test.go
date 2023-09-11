@@ -22,3 +22,12 @@ func TestRichText(t *testing.T) {
 
 	isEqual[string](t, htmlStr, "")
 }
+
+func TextRichTextWithJustRegularText(t *testing.T) {
+	mdStr := "hello, world"
+	rt := ExtractRichText(mdStr)
+
+	htmlStr := rt.ToHTMLString()
+
+	isEqual[string](t, htmlStr, mdStr)
+}
