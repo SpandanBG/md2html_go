@@ -23,10 +23,28 @@ func isNotNil[T comparable](t *testing.T, a T) {
 }
 
 func TestParagraphMD(t *testing.T) {
-	mdStr := "hello, world"
-	para := NewParagraph(mdStr)
+	for _, test := range []struct {
+		name   string
+		input  string
+		output string
+	}{
+		{
+			name:   "should return <p>hello, world</p>",
+			input:  "hello, world",
+			output: "<p>hello, world</p>",
+		},
+		{
+			name:   "should return <p>hello, <em>world</em></p>",
+			input:  "hello, *world*",
+			output: "<p>hello, <em>world</em></p>",
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			para := NewParagraph(test.input)
 
-	htmlStr := para.ToHTMLString()
+			actualOutput := para.ToHTMLString()
 
-	isEqual[string](t, htmlStr, "<p>hello, world</p>")
+			isEqual[string](t, actualOutput, test.output)
+		})
+	}
 }

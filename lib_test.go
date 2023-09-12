@@ -1,10 +1,6 @@
 package md2htmlgo
 
-import (
-	"testing"
-
-	"sudocoding.xyz/md2html_go/common"
-)
+import "testing"
 
 func isEqual[T comparable](t *testing.T, a, b T) {
 	if a != b {
@@ -27,8 +23,28 @@ func isNotNil[T comparable](t *testing.T, a T) {
 }
 
 func TestNewMarkdown(t *testing.T) {
-	result := NewMarkdown("hello, world")
+	for _, test := range []struct {
+		name   string
+		input  string
+		output string
+	}{
+		{
+			name:   "should return <p>hello, world</p>",
+			input:  "hello, world",
+			output: "<p>hello, world</p>",
+		},
+		{
+			name:   "should return <p>hello, <em>world</em></p>",
+			input:  "hello, *world*",
+			output: "<p>hello, <em>world</em></p>",
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			md := NewMarkdown(test.input)
 
-	isNotNil[common.MDComponent](t, result)
-	isEqual[string](t, result.ToHTMLString(), "<p>hello, world</p>")
+			actualOutput := md.ToHTMLString()
+
+			isEqual[string](t, actualOutput, test.output)
+		})
+	}
 }
