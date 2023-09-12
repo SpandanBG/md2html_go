@@ -34,9 +34,9 @@ func TestNewMarkdown(t *testing.T) {
 			output: "<p>hello, world</p>",
 		},
 		{
-			name:   "should return <p>hello, <em>world</em></p>",
-			input:  "hello, *world*",
-			output: "<p>hello, <em>world</em></p>",
+			name:   "should return <p>hello, <em>world</em>!</p>",
+			input:  "hello, *world*!",
+			output: "<p>hello, <em>world</em>!</p>",
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
