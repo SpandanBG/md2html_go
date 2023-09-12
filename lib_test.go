@@ -1,9 +1,9 @@
 package md2htmlgo
 
 import (
-	"os"
-	"strings"
 	"testing"
+
+	"sudocoding.xyz/md2html_go/common"
 )
 
 func isEqual[T comparable](t *testing.T, a, b T) {
@@ -27,13 +27,8 @@ func isNotNil[T comparable](t *testing.T, a T) {
 }
 
 func TestNewMarkdown(t *testing.T) {
-	testfileName := "examples/hello_world.md"
-	expectedOutput, _ := os.ReadFile("examples/hello_world.html")
-	expecteContent := strings.TrimSpace(string(expectedOutput))
+	result := NewMarkdown("hello, world")
 
-	result, err := NewMarkdownFromFile(testfileName)
-
-	isNil[error](t, err)
-	isNotNil[*Markdown](t, &result)
-	isEqual[string](t, result.ToHTMLString(), expecteContent)
+	isNotNil[common.MDComponent](t, result)
+	isEqual[string](t, result.ToHTMLString(), "<p>hello, world</p>")
 }

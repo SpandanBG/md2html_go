@@ -1,38 +1,33 @@
 package italic
 
 import (
-	"fmt"
-	"strings"
+	"errors"
+	"regexp"
 
 	"sudocoding.xyz/md2html_go/common"
+	"sudocoding.xyz/md2html_go/richtext/regulartext"
 )
 
 const (
-	openingTag         = "<em>"
-	closingTag         = "</em>"
-	defaultPlaceholder = "%s%s%s"
+	openingTag                  = "<em>"
+	closingTag                  = "</em>"
+	validMDItalicREXGP          = "^\\*([^\\*]*)\\*$"
+	invalidItalicMDStringErrMsg = "Invalid italic markdown supplied"
 )
 
-type Italic struct {
-	Value strings.Builder
-}
+func NewItalic(rawMD string) (common.MDComponent, error) {
+	italicRexgp := regexp.MustCompile(validMDItalicREXGP)
 
-func ExtractItalic(rawMD string) Italic {
-	var s strings.Builder
-
-	for i, char := range rawMD {
-		if i == 0 || i == len(rawMD)-1 {
-			continue
-		}
-
-		for _, escChar := range common.EscapeRawToHTML(char) {
-			s.WriteRune(escChar)
-		}
+	if !italicRexgp.Match([]byte(rawMD)) {
+		return nil, errors.New(invalidItalicMDStringErrMsg)
 	}
 
-	return Italic{Value: s}
-}
+	secondLastIdx := len(rawMD) - 1
+	regularText := regulartext.NewRegularText(rawMD[1:secondLastIdx])
 
-func (i *Italic) ToHTMLString() string {
-	return fmt.Sprintf(defaultPlaceholder, openingTag, i.Value.String(), closingTag)
+	return &common.TaggedText{
+		Components: []common.MDComponent{regularText},
+		OpenTag:    openingTag,
+		CloseTag:   closingTag,
+	}, nil
 }

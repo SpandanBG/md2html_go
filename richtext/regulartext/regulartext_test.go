@@ -24,7 +24,7 @@ func isNotNil[T comparable](t *testing.T, a T) {
 
 func TestToHMTLString(t *testing.T) {
 	mdStr := "hello, world"
-	regulartext := ExtractRegularText(mdStr)
+	regulartext := NewRegularText(mdStr)
 
 	htmlStr := regulartext.ToHTMLString()
 
@@ -33,7 +33,7 @@ func TestToHMTLString(t *testing.T) {
 
 func TestToHMTLStringWithEscapedChars(t *testing.T) {
 	mdStr := "&\"'<>"
-	regulartext := ExtractRegularText(mdStr)
+	regulartext := NewRegularText(mdStr)
 
 	htmlStr := regulartext.ToHTMLString()
 

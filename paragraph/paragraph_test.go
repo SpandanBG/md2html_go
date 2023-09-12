@@ -22,17 +22,9 @@ func isNotNil[T comparable](t *testing.T, a T) {
 	}
 }
 
-func TestToHTMLString(t *testing.T) {
-	para := Paragraph{}
-
-	htmlStr := para.ToHTMLString()
-
-	isEqual[string](t, htmlStr, "<p></p>")
-}
-
 func TestParagraphMD(t *testing.T) {
 	mdStr := "hello, world"
-	para := ExtractParagraph(mdStr)
+	para := NewParagraph(mdStr)
 
 	htmlStr := para.ToHTMLString()
 

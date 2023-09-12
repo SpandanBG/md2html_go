@@ -1,39 +1,23 @@
 package paragraph
 
 import (
-	"fmt"
-	"strings"
-
 	"sudocoding.xyz/md2html_go/common"
 	"sudocoding.xyz/md2html_go/richtext"
 )
 
 const (
-	openingTag         = "<p>"
-	closingTag         = "</p>"
-	defaultPlaceholder = "%s%s%s"
+	openingTag = "<p>"
+	closingTag = "</p>"
 )
 
-type Paragraph struct {
-	Components []common.MDComponent
-}
+func NewParagraph(rawMD string) common.MDComponent {
+	rt := richtext.NewRichText(rawMD)
 
-func ExtractParagraph(rawMD string) Paragraph {
-	rt := richtext.ExtractRichText(rawMD)
-
-	return Paragraph{
+	return &common.TaggedText{
 		Components: []common.MDComponent{
-			&rt,
+			rt,
 		},
+		OpenTag:  openingTag,
+		CloseTag: closingTag,
 	}
-}
-
-func (p *Paragraph) ToHTMLString() string {
-	var s strings.Builder
-
-	for _, comp := range p.Components {
-		s.WriteString(comp.ToHTMLString())
-	}
-
-	return fmt.Sprintf(defaultPlaceholder, openingTag, s.String(), closingTag)
 }

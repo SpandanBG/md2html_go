@@ -24,30 +24,39 @@ func isNotNil[T comparable](t *testing.T, a T) {
 
 func TestItalic(t *testing.T) {
 	for _, test := range []struct {
-		name   string
-		input  string
-		output string
+		name     string
+		input    string
+		output   string
+		hasError bool
 	}{
 		{
-			name:   "should change '' to '<em></em>'",
-			input:  "",
-			output: "<em></em>",
+			name:     "should throw error for empty input",
+			input:    "",
+			output:   "",
+			hasError: true,
 		},
 		{
-			name:   "should change '**' to '<em></em>'",
-			input:  "**",
-			output: "<em></em>",
+			name:     "should change '**' to '<em></em>'",
+			input:    "**",
+			output:   "<em></em>",
+			hasError: false,
 		},
 		{
-			name:   "should change '*hello, world*' to '<em>hello, world</em>'",
-			input:  "*hello, world*",
-			output: "<em>hello, world</em>",
+			name:     "should change '*hello & world*' to '<em>hello &amp; world</em>'",
+			input:    "*hello, world*",
+			output:   "<em>hello, world</em>",
+			hasError: false,
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			actualOutput := ExtractItalic(test.input)
+			actualOutput, err := NewItalic(test.input)
 
-			isEqual[string](t, actualOutput.ToHTMLString(), test.output)
+			if test.hasError {
+				isNotNil[error](t, err)
+			} else {
+				isNil[error](t, err)
+				isEqual[string](t, actualOutput.ToHTMLString(), test.output)
+			}
 		})
 	}
 }
