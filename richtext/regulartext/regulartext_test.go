@@ -73,6 +73,14 @@ func TestFillEmptyRanges(t *testing.T) {
 		ouput     []common.TextRange
 	}{
 		{
+			name:      "should fill entire ranges",
+			input:     []common.TextRange{},
+			lastIndex: 7,
+			ouput: []common.TextRange{
+				{Range: []int{0, 7}, Type: RegularTextMarker},
+			},
+		},
+		{
 			name: "should fill no ranges",
 			input: []common.TextRange{
 				{Range: []int{0, 7}, Type: "xyz"},
