@@ -15,11 +15,20 @@ func isNil[T comparable](t *testing.T, a T) {
 	}
 }
 
-func TextRichTextWithJustRegularText(t *testing.T) {
+func TestRichTextWithJustRegularText(t *testing.T) {
 	mdStr := "hello, world"
 	rt := NewRichText(mdStr)
 
 	htmlStr := rt.ToHTMLString()
 
 	isEqual[string](t, htmlStr, mdStr)
+}
+
+func TestRichTextWithJustRegularAndItalicTexts(t *testing.T) {
+	mdStr := "hello, *world*!"
+	rt := NewRichText(mdStr)
+
+	htmlStr := rt.ToHTMLString()
+
+	isEqual[string](t, htmlStr, "hello, <em>world</em>!")
 }

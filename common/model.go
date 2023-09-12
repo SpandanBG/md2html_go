@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+type TextRange struct {
+	Range []int
+	Type  string
+}
+
 type RawText string
 
 func (rt *RawText) ToHTMLString() string {
