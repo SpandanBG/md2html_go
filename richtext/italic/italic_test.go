@@ -104,6 +104,11 @@ func TestGetItalicRange(t *testing.T) {
 			input:         "a *a* *b *c*",
 			expectedRange: [][]int{{2, 5}, {6, 10}},
 		},
+		{
+			name:          "should return skip escaped *",
+			input:         "a *a* \\*b *c*",
+			expectedRange: [][]int{{2, 5}, {10, 13}},
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			txtRanges := GetItalicRanges(test.input)

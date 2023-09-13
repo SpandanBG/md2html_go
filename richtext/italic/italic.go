@@ -13,6 +13,7 @@ const (
 )
 
 const (
+	italicMarker                = '*'
 	openingTag                  = "<em>"
 	closingTag                  = "</em>"
 	validMDItalicREGXP          = "^\\*([^\\*]*)\\*$"
@@ -48,13 +49,33 @@ func GetItalicRanges(rawMD string) []common.TextRange {
 		return txtRanges
 	}
 
-	re := regexp.MustCompile(searchItalicsREGXP)
-	slices := re.FindAllStringIndex(rawMD, -1)
-	for _, rng := range slices {
-		txtRanges = append(txtRanges, common.TextRange{
-			Range: rng,
-			Type:  ItalicMarker,
-		})
+	stack := make([]int, 2)
+	si := 0
+	skip := false
+	for i, char := range rawMD {
+		if skip {
+			skip = false
+			continue
+		}
+
+		if char == common.EscChar {
+			skip = true
+			continue
+		}
+
+		if char == italicMarker {
+			stack[si] = i
+			si++
+		}
+
+		if si == 2 {
+			si = 0
+			txtRanges = append(txtRanges, common.TextRange{
+				Range: []int{stack[0], stack[1] + 1},
+				Type:  ItalicMarker,
+			})
+		}
 	}
+
 	return txtRanges
 }
