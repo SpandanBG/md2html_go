@@ -7,8 +7,6 @@ import (
 	"sudocoding.xyz/md2html_go/common"
 )
 
-const RegularTextMarker = "aA"
-
 const noTextErrMsg = "No text present to create regular text MD component"
 
 func NewRegularText(rawMD string) (common.MDComponent, error) {
@@ -17,11 +15,27 @@ func NewRegularText(rawMD string) (common.MDComponent, error) {
 	}
 
 	var s strings.Builder
+	prevWasEsc := false
 	for _, char := range rawMD {
+		if char == common.EscChar && !prevWasEsc {
+			prevWasEsc = true
+			continue
+		}
+
+		if prevWasEsc && !common.EscAbleMarkes(char) {
+			s.WriteRune(common.EscChar)
+		}
+
+		prevWasEsc = false
 		for _, escChar := range common.EscapeRawToHTML(char) {
 			s.WriteRune(escChar)
 		}
 	}
+
+	if prevWasEsc {
+		s.WriteRune(common.EscChar)
+	}
+
 	comp := common.RawText(s.String())
 	return &comp, nil
 }
@@ -30,7 +44,7 @@ func FillEmptyRanges(ranges []common.TextRange, lastIndex int) []common.TextRang
 	if len(ranges) == 0 {
 		return []common.TextRange{{
 			Range: []int{0, lastIndex},
-			Type:  RegularTextMarker,
+			Type:  common.RegularTextMarker,
 		}}
 	}
 
@@ -46,7 +60,7 @@ func FillEmptyRanges(ranges []common.TextRange, lastIndex int) []common.TextRang
 
 		allRanges = append(allRanges, common.TextRange{
 			Range: []int{i, ranges[j].Range[0]},
-			Type:  RegularTextMarker,
+			Type:  common.RegularTextMarker,
 		}, ranges[j])
 		i = ranges[j].Range[1]
 	}
@@ -54,7 +68,7 @@ func FillEmptyRanges(ranges []common.TextRange, lastIndex int) []common.TextRang
 	if i < lastIndex {
 		allRanges = append(allRanges, common.TextRange{
 			Range: []int{i, lastIndex},
-			Type:  RegularTextMarker,
+			Type:  common.RegularTextMarker,
 		})
 	}
 

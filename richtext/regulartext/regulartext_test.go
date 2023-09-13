@@ -51,6 +51,36 @@ func TestNewRegularText(t *testing.T) {
 			output:   "&amp;&quot;&#39;&lt;&gt;",
 			hasError: false,
 		},
+		{
+			name:     "should remove escape char",
+			input:    "a \\* b",
+			output:   "a * b",
+			hasError: false,
+		},
+		{
+			name:     "should not second subsequent esc char",
+			input:    "a \\\\ b",
+			output:   "a \\ b",
+			hasError: false,
+		},
+		{
+			name:     "should convert \\\\* to \\*",
+			input:    "\\\\*",
+			output:   "\\*",
+			hasError: false,
+		},
+		{
+			name:     "should not escape single \\",
+			input:    "\\",
+			output:   "\\",
+			hasError: false,
+		},
+		{
+			name:     "should not escape non escapable chars",
+			input:    "\\a",
+			output:   "\\a",
+			hasError: false,
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			actualOuput, err := NewRegularText(test.input)
@@ -77,109 +107,109 @@ func TestFillEmptyRanges(t *testing.T) {
 			input:     []common.TextRange{},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 7}, Type: RegularTextMarker},
+				{Range: []int{0, 7}, Type: common.RegularTextMarker},
 			},
 		},
 		{
 			name: "should fill no ranges",
 			input: []common.TextRange{
-				{Range: []int{0, 7}, Type: "xyz"},
+				{Range: []int{0, 7}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 7}, Type: "xyz"},
+				{Range: []int{0, 7}, Type: common.ItalicMarker},
 			},
 		},
 		{
 			name: "should fill starting range",
 			input: []common.TextRange{
-				{Range: []int{4, 7}, Type: "xyz"},
+				{Range: []int{4, 7}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 4}, Type: RegularTextMarker},
-				{Range: []int{4, 7}, Type: "xyz"},
+				{Range: []int{0, 4}, Type: common.RegularTextMarker},
+				{Range: []int{4, 7}, Type: common.ItalicMarker},
 			},
 		},
 		{
 			name: "should fill end range",
 			input: []common.TextRange{
-				{Range: []int{0, 3}, Type: "xyz"},
+				{Range: []int{0, 3}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 3}, Type: "xyz"},
-				{Range: []int{3, 7}, Type: RegularTextMarker},
+				{Range: []int{0, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 7}, Type: common.RegularTextMarker},
 			},
 		},
 		{
 			name: "should fill start and end range",
 			input: []common.TextRange{
-				{Range: []int{2, 3}, Type: "xyz"},
-				{Range: []int{3, 5}, Type: "xyz"},
+				{Range: []int{2, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 5}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 2}, Type: RegularTextMarker},
-				{Range: []int{2, 3}, Type: "xyz"},
-				{Range: []int{3, 5}, Type: "xyz"},
-				{Range: []int{5, 7}, Type: RegularTextMarker},
+				{Range: []int{0, 2}, Type: common.RegularTextMarker},
+				{Range: []int{2, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 5}, Type: common.ItalicMarker},
+				{Range: []int{5, 7}, Type: common.RegularTextMarker},
 			},
 		},
 		{
 			name: "should fill start, middle and end range",
 			input: []common.TextRange{
-				{Range: []int{2, 3}, Type: "xyz"},
-				{Range: []int{5, 6}, Type: "xyz"},
+				{Range: []int{2, 3}, Type: common.ItalicMarker},
+				{Range: []int{5, 6}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 2}, Type: RegularTextMarker},
-				{Range: []int{2, 3}, Type: "xyz"},
-				{Range: []int{3, 5}, Type: RegularTextMarker},
-				{Range: []int{5, 6}, Type: "xyz"},
-				{Range: []int{6, 7}, Type: RegularTextMarker},
+				{Range: []int{0, 2}, Type: common.RegularTextMarker},
+				{Range: []int{2, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 5}, Type: common.RegularTextMarker},
+				{Range: []int{5, 6}, Type: common.ItalicMarker},
+				{Range: []int{6, 7}, Type: common.RegularTextMarker},
 			},
 		},
 		{
 			name: "should fill start and middle range",
 			input: []common.TextRange{
-				{Range: []int{2, 3}, Type: "xyz"},
-				{Range: []int{5, 7}, Type: "xyz"},
+				{Range: []int{2, 3}, Type: common.ItalicMarker},
+				{Range: []int{5, 7}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 2}, Type: RegularTextMarker},
-				{Range: []int{2, 3}, Type: "xyz"},
-				{Range: []int{3, 5}, Type: RegularTextMarker},
-				{Range: []int{5, 7}, Type: "xyz"},
+				{Range: []int{0, 2}, Type: common.RegularTextMarker},
+				{Range: []int{2, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 5}, Type: common.RegularTextMarker},
+				{Range: []int{5, 7}, Type: common.ItalicMarker},
 			},
 		},
 		{
 			name: "should fill middle and end range",
 			input: []common.TextRange{
-				{Range: []int{0, 3}, Type: "xyz"},
-				{Range: []int{5, 6}, Type: "xyz"},
+				{Range: []int{0, 3}, Type: common.ItalicMarker},
+				{Range: []int{5, 6}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 3}, Type: "xyz"},
-				{Range: []int{3, 5}, Type: RegularTextMarker},
-				{Range: []int{5, 6}, Type: "xyz"},
-				{Range: []int{6, 7}, Type: RegularTextMarker},
+				{Range: []int{0, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 5}, Type: common.RegularTextMarker},
+				{Range: []int{5, 6}, Type: common.ItalicMarker},
+				{Range: []int{6, 7}, Type: common.RegularTextMarker},
 			},
 		},
 		{
 			name: "should fill middle range",
 			input: []common.TextRange{
-				{Range: []int{0, 3}, Type: "xyz"},
-				{Range: []int{5, 7}, Type: "xyz"},
+				{Range: []int{0, 3}, Type: common.ItalicMarker},
+				{Range: []int{5, 7}, Type: common.ItalicMarker},
 			},
 			lastIndex: 7,
 			ouput: []common.TextRange{
-				{Range: []int{0, 3}, Type: "xyz"},
-				{Range: []int{3, 5}, Type: RegularTextMarker},
-				{Range: []int{5, 7}, Type: "xyz"},
+				{Range: []int{0, 3}, Type: common.ItalicMarker},
+				{Range: []int{3, 5}, Type: common.RegularTextMarker},
+				{Range: []int{5, 7}, Type: common.ItalicMarker},
 			},
 		},
 	} {
@@ -190,7 +220,7 @@ func TestFillEmptyRanges(t *testing.T) {
 			for i, rng := range actualOuput {
 				isEqual[int](t, rng.Range[0], test.ouput[i].Range[0])
 				isEqual[int](t, rng.Range[1], test.ouput[i].Range[1])
-				isEqual[string](t, rng.Type, test.ouput[i].Type)
+				isEqual[common.MDMarkers](t, rng.Type, test.ouput[i].Type)
 			}
 		})
 	}

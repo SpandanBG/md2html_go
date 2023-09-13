@@ -1,5 +1,16 @@
 package common
 
+func EscAbleMarkes(char rune) bool {
+	switch char {
+	case rune(ItalicMarker):
+		return true
+	case EscChar:
+		return true
+	default:
+		return false
+	}
+}
+
 func EscapeRawToHTML(char rune) []rune {
 	switch char {
 	case '&':

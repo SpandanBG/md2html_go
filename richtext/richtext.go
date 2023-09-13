@@ -14,7 +14,7 @@ func NewRichText(rawMD string) common.MDComponent {
 
 	for _, rng := range allRanges {
 		switch rng.Type {
-		case italic.ItalicMarker:
+		case common.ItalicMarker:
 			if italicText, err := italic.NewItalic(rawMD[rng.Range[0]:rng.Range[1]]); err == nil {
 				components = append(components, italicText)
 			}

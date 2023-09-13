@@ -9,11 +9,6 @@ import (
 )
 
 const (
-	ItalicMarker = "*"
-)
-
-const (
-	italicMarker                = '*'
 	openingTag                  = "<em>"
 	closingTag                  = "</em>"
 	validMDItalicREGXP          = "^\\*([^\\*]*)\\*$"
@@ -63,7 +58,7 @@ func GetItalicRanges(rawMD string) []common.TextRange {
 			continue
 		}
 
-		if char == italicMarker {
+		if char == rune(common.ItalicMarker) {
 			stack[si] = i
 			si++
 		}
@@ -72,7 +67,7 @@ func GetItalicRanges(rawMD string) []common.TextRange {
 			si = 0
 			txtRanges = append(txtRanges, common.TextRange{
 				Range: []int{stack[0], stack[1] + 1},
-				Type:  ItalicMarker,
+				Type:  common.ItalicMarker,
 			})
 		}
 	}

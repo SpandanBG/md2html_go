@@ -7,7 +7,7 @@ import (
 
 type TextRange struct {
 	Range []int
-	Type  string
+	Type  MDMarkers
 }
 
 type RawText string
