@@ -11,9 +11,9 @@ import (
 //
 // The `>` that beigns a block quote may be followed optionally by a space which
 // isn't considered as part of the content.
-// So, in case `>` is followed by a tab, it treated that the content starts with
-// 3 space (4 spaces for tab. 1 removed by default and remaining 3 added to the
-// content).
+// So, in case `>` is followed by a tab, it treated as 3 spaces
+// That means 1st space will be discarded and the content will start with
+// 2 spaces
 func GetBlockQuoteContent(blockquoteLine string) string {
 	// If just `>` is the entire line
 	if len(blockquoteLine) == 1 {
@@ -31,7 +31,7 @@ func GetBlockQuoteContent(blockquoteLine string) string {
 			return ""
 		}
 
-		s.WriteString(string([]rune{common.Space, common.Space, common.Space}))
+		s.WriteString(string([]rune{common.Space, common.Space}))
 
 	} else if contentChars[0] != common.Space {
 		s.WriteRune(contentChars[0])

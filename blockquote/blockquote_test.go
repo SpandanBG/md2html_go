@@ -47,14 +47,14 @@ func TestGetBlockQuoteContent(t *testing.T) {
 			output: "a",
 		},
 		{
-			name:   "should return '   a' for >\ta",
+			name:   "should return '  a' for >\ta",
 			input:  ">\ta",
-			output: "   a",
+			output: "  a",
 		},
 		{
-			name:   "should return '   \ta' for >\t\ta",
+			name:   "should return '  \ta' for >\t\ta",
 			input:  ">\t\ta",
-			output: "   \ta",
+			output: "  \ta",
 		},
 		{
 			name:   "should return '' for >\t",
