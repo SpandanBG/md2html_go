@@ -182,3 +182,121 @@ func TestIsBlankLine(t *testing.T) {
 		})
 	}
 }
+
+func TestIsCharWhitespace(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		input  rune
+		output bool
+	}{
+		{
+			name:   "should return false for non whitespace character",
+			input:  'a',
+			output: false,
+		},
+		{
+			name:   "should return true for LineFeed",
+			input:  LineFeed,
+			output: true,
+		},
+		{
+			name:   "should return true for FormFeed",
+			input:  FormFeed,
+			output: true,
+		},
+		{
+			name:   "should return true for CarriageReturn",
+			input:  CarriageReturn,
+			output: true,
+		},
+		{
+			name:   "should return true for Space",
+			input:  Space,
+			output: true,
+		},
+		{
+			name:   "should return true for NoBreakSpace",
+			input:  NoBreakSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for OGHamSpaceMark",
+			input:  OGHamSpaceMark,
+			output: true,
+		},
+		{
+			name:   "should return true for ENQuad",
+			input:  ENQuad,
+			output: true,
+		},
+		{
+			name:   "should return true for EMQuad",
+			input:  EMQuad,
+			output: true,
+		},
+		{
+			name:   "should return true for ENSpace",
+			input:  ENSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for EMSpace",
+			input:  EMSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for ThreePerEMSpace",
+			input:  ThreePerEMSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for FourPerEMSpace",
+			input:  FourPerEMSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for SixPerEMSpace",
+			input:  SixPerEMSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for FigureSpace",
+			input:  FigureSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for PunctuationSpace",
+			input:  PunctuationSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for ThinSpace",
+			input:  ThinSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for HairSpace",
+			input:  HairSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for NarrowNoBreakSpace",
+			input:  NarrowNoBreakSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for MediumMathematicalSpace",
+			input:  MediumMathematicalSpace,
+			output: true,
+		},
+		{
+			name:   "should return true for IdeographicSpace",
+			input:  IdeographicSpace,
+			output: true,
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			isEqual[bool](t, test.output, IsCharWhiteSpace(test.input))
+		})
+	}
+}

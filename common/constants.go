@@ -9,27 +9,28 @@ package common
 const (
 	Null           = '\u0000'
 	LineFeed       = '\u000A'
+	FormFeed       = '\u000C'
 	CarriageReturn = '\u000D'
 	Tab            = '\u0009'
 
 	// Unicode "Zs" category "Seprarator,Space" characters
 	Space                   = '\u0020'
-	NoBreakSpace            = "U+00A0"
-	OGHamSpaceMark          = "U+1680"
-	ENQuad                  = "U+2000"
-	EMQuad                  = "U+2001"
-	ENSpace                 = "U+2002"
-	EMSpace                 = "U+2003"
-	ThreePerEMSpace         = "U+2004"
-	FourPerEMSpace          = "U+2005"
-	SixPerEMSpace           = "U+2006"
-	FigureSpace             = "U+2007"
-	PunctuationSpace        = "U+2008"
-	ThinSpace               = "U+2009"
-	HairSpace               = "U+200A"
-	NarrowNoBreakSpace      = "U+202F"
-	MediumMathematicalSpace = "U+205F"
-	IdeographicSpace        = "U+3000"
+	NoBreakSpace            = '\u00A0'
+	OGHamSpaceMark          = '\u1680'
+	ENQuad                  = '\u2000'
+	EMQuad                  = '\u2001'
+	ENSpace                 = '\u2002'
+	EMSpace                 = '\u2003'
+	ThreePerEMSpace         = '\u2004'
+	FourPerEMSpace          = '\u2005'
+	SixPerEMSpace           = '\u2006'
+	FigureSpace             = '\u2007'
+	PunctuationSpace        = '\u2008'
+	ThinSpace               = '\u2009'
+	HairSpace               = '\u200A'
+	NarrowNoBreakSpace      = '\u202F'
+	MediumMathematicalSpace = '\u205F'
+	IdeographicSpace        = '\u3000'
 
 	EscChar = '\\'
 )

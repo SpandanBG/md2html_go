@@ -73,3 +73,17 @@ func IsBlankLine(line string) bool {
 
 	return true
 }
+
+// Returns true if the character is a whitespace character
+//
+// A Unicode whitespace character is any code point in the Unicode Zs category
+// or a tab (U+0009), line feed (U+000A), form feed (U+000C), or carriage return
+// (U+000D)
+func IsCharWhiteSpace(char rune) bool {
+	switch char {
+	case Space, NoBreakSpace, OGHamSpaceMark, ENQuad, EMQuad, ENSpace, EMSpace, ThreePerEMSpace, FourPerEMSpace, SixPerEMSpace, FigureSpace, PunctuationSpace, ThinSpace, HairSpace, NarrowNoBreakSpace, MediumMathematicalSpace, IdeographicSpace, Tab, LineFeed, FormFeed, CarriageReturn:
+		return true
+	default:
+		return false
+	}
+}
