@@ -294,6 +294,16 @@ func TestIsCharWhitespace(t *testing.T) {
 			input:  IdeographicSpace,
 			output: true,
 		},
+		{
+			name:   "should return false for U+1999",
+			input:  '\u1999',
+			output: false,
+		},
+		{
+			name:   "should return false for U+200B",
+			input:  '\u200B',
+			output: false,
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			isEqual[bool](t, test.output, IsCharWhiteSpace(test.input))

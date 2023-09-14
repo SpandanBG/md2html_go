@@ -81,11 +81,20 @@ func IsBlankLine(line string) bool {
 // (U+000D)
 func IsCharWhiteSpace(char rune) bool {
 	switch char {
-	case Space, NoBreakSpace, OGHamSpaceMark, ENQuad, EMQuad, ENSpace, EMSpace, ThreePerEMSpace, FourPerEMSpace, SixPerEMSpace, FigureSpace, PunctuationSpace, ThinSpace, HairSpace, NarrowNoBreakSpace, MediumMathematicalSpace, IdeographicSpace, Tab, LineFeed, FormFeed, CarriageReturn:
+	case Space, Tab, LineFeed, CarriageReturn:
 		return true
-	default:
-		return false
 	}
+
+	if char >= ENQuad && char <= HairSpace {
+		return true
+	}
+
+	switch char {
+	case FormFeed, NoBreakSpace, OGHamSpaceMark, NarrowNoBreakSpace, MediumMathematicalSpace, IdeographicSpace:
+		return true
+	}
+
+	return false
 }
 
 // Changes Null (U+0000) to Replacement Character (U+FFFD)
