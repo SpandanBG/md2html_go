@@ -1,6 +1,10 @@
 package md2htmlgo
 
-import "testing"
+import (
+	"testing"
+
+	"sudocoding.xyz/md2html_go/common"
+)
 
 func isEqual[T comparable](t *testing.T, a, b T) {
 	if a != b {
@@ -26,25 +30,37 @@ func TestNewMarkdown(t *testing.T) {
 	for _, test := range []struct {
 		name   string
 		input  string
-		output string
+		output common.MDRanges
 	}{
 		{
-			name:   "should return <p>hello, world</p>",
-			input:  "hello, world",
-			output: "<p>hello, world</p>",
-		},
-		{
-			name:   "should return <p>hello, <em>world</em>!</p>",
-			input:  "hello, *world*!",
-			output: "<p>hello, <em>world</em>!</p>",
+			name:  "should create default md range",
+			input: "hello, world",
+			output: common.MDRanges{
+				RawMD:        []rune("hello, world"),
+				StartIndices: []int{},
+				EndIndices:   []int{},
+				MDTokens:     []rune{},
+			},
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			md := NewMarkdown(test.input)
+			actualOutput := NewMarkdown(test.input)
 
-			actualOutput := md.ToHTMLString()
+			isEqual[int](t, len(test.output.RawMD), len(actualOutput.RawMD))
+			isEqual[int](t, len(test.output.StartIndices), len(actualOutput.StartIndices))
+			isEqual[int](t, len(test.output.EndIndices), len(actualOutput.EndIndices))
+			isEqual[int](t, len(test.output.MDTokens), len(actualOutput.MDTokens))
 
-			isEqual[string](t, actualOutput, test.output)
+			isEqual[string](t, string(test.output.RawMD), string(actualOutput.RawMD))
+			isEqual[string](t, string(test.output.MDTokens), string(actualOutput.MDTokens))
+
+			for i, eachIdx := range actualOutput.StartIndices {
+				isEqual[int](t, test.output.StartIndices[i], eachIdx)
+			}
+
+			for i, eachIdx := range actualOutput.EndIndices {
+				isEqual[int](t, test.output.EndIndices[i], eachIdx)
+			}
 		})
 	}
 }

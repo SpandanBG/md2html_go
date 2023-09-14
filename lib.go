@@ -2,17 +2,15 @@ package md2htmlgo
 
 import (
 	"sudocoding.xyz/md2html_go/common"
-	"sudocoding.xyz/md2html_go/paragraph"
 )
 
-func NewMarkdown(content string) common.MDComponent {
-	para := paragraph.NewParagraph(content)
+/* PIKE MATCHBOX */
 
-	return &common.TaggedText{
-		Components: []common.MDComponent{
-			para,
-		},
-		OpenTag:  "",
-		CloseTag: "",
+func NewMarkdown(content string) common.MDRanges {
+	return common.MDRanges{
+		RawMD:        []rune(content),
+		StartIndices: []int{},
+		EndIndices:   []int{},
+		MDTokens:     []rune{},
 	}
 }

@@ -1,6 +1,9 @@
 package common
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func isEqual[T comparable](t *testing.T, a, b T) {
 	if a != b {
@@ -63,6 +66,79 @@ func TestEscapeRawToHTML(t *testing.T) {
 			actualOuput := EscapeRawToHTML(test.input)
 
 			isEqual[string](t, test.output, string(actualOuput))
+		})
+	}
+}
+
+func TestSplitByLines(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		input  string
+		output []string
+	}{
+		{
+			name:   "should return no lines for empty content",
+			input:  "",
+			output: []string{},
+		},
+		{
+			name:   "should return one line for single line content ending with line feed",
+			input:  fmt.Sprintf("hello, world%c", LineFeed),
+			output: []string{"hello, world"},
+		},
+		{
+			name:   "should return one line for single line content ending with carriage return",
+			input:  fmt.Sprintf("hello, world%c", CarriageReturn),
+			output: []string{"hello, world"},
+		},
+		{
+			name:   "should return one line for single line content ending with carriage return and line feed",
+			input:  fmt.Sprintf("hello, world%c%c", CarriageReturn, LineFeed),
+			output: []string{"hello, world"},
+		},
+		{
+			name:   "should return one line for single line content",
+			input:  "hello, world",
+			output: []string{"hello, world"},
+		},
+		{
+			name:   "should return 2 line for 2 line content seperated by line feed",
+			input:  fmt.Sprintf("hello,%cworld", LineFeed),
+			output: []string{"hello,", "world"},
+		},
+		{
+			name:   "should return 2 line for 2 line content seperated by carriage return",
+			input:  fmt.Sprintf("hello,%cworld", CarriageReturn),
+			output: []string{"hello,", "world"},
+		},
+		{
+			name:   "should return 2 line for 2 line content seperated by carriage return",
+			input:  fmt.Sprintf("hello,%cworld", CarriageReturn),
+			output: []string{"hello,", "world"},
+		},
+		{
+			name:   "should return 2 line for 2 line content seperated by carriage return followed by line feed",
+			input:  fmt.Sprintf("hello,%c%cworld", CarriageReturn, LineFeed),
+			output: []string{"hello,", "world"},
+		},
+		{
+			name:   "should return an empty line for as single line ending",
+			input:  fmt.Sprintf("%c", LineFeed),
+			output: []string{""},
+		},
+		{
+			name:   "should return 2 empty line for 2 line endings",
+			input:  fmt.Sprintf("%c%c", LineFeed, LineFeed),
+			output: []string{"", ""},
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			actualOutput := SplitByLines(test.input)
+
+			isEqual[int](t, len(test.output), len(actualOutput))
+			for i, eachActual := range actualOutput {
+				isEqual[string](t, test.output[i], eachActual)
+			}
 		})
 	}
 }
