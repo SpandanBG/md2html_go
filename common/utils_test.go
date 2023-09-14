@@ -300,3 +300,28 @@ func TestIsCharWhitespace(t *testing.T) {
 		})
 	}
 }
+
+func TestSecureNullChar(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		input  string
+		output string
+	}{
+		{
+			name:   "should return same string when no null char is present",
+			input:  "asdf asdf",
+			output: "asdf asdf",
+		},
+		{
+			name:   "should repalce null with replacement char",
+			input:  string([]rune{'a', Null}),
+			output: string([]rune{'a', ReplacementCha}),
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			actualOuput := SecureNullChar(test.input)
+
+			isEqual[string](t, test.output, actualOuput)
+		})
+	}
+}

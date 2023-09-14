@@ -42,6 +42,16 @@ func TestNewMarkdown(t *testing.T) {
 				MDTokens:     []rune{},
 			},
 		},
+		{
+			name:  "should create secured md range",
+			input: string([]rune{'a', 'b', 'c', common.Null}),
+			output: common.MDRanges{
+				RawMD:        []rune{'a', 'b', 'c', common.ReplacementCha},
+				StartIndices: []int{},
+				EndIndices:   []int{},
+				MDTokens:     []rune{},
+			},
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			actualOutput := NewMarkdown(test.input)

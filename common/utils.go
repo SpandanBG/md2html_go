@@ -87,3 +87,20 @@ func IsCharWhiteSpace(char rune) bool {
 		return false
 	}
 }
+
+// Changes Null (U+0000) to Replacement Character (U+FFFD)
+//
+// Following the common markdown security guidelines
+func SecureNullChar(content string) string {
+	var s strings.Builder
+
+	for _, char := range content {
+		if char == Null {
+			s.WriteRune(ReplacementCha)
+		} else {
+			s.WriteRune(char)
+		}
+	}
+
+	return s.String()
+}

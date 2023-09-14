@@ -8,6 +8,7 @@ package common
 
 const (
 	Null           = '\u0000'
+	ReplacementCha = '\uFFFD'
 	LineFeed       = '\u000A'
 	FormFeed       = '\u000C'
 	CarriageReturn = '\u000D'
