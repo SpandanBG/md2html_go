@@ -11,7 +11,10 @@ const (
 	LineFeed       = '\u000A'
 	FormFeed       = '\u000C'
 	CarriageReturn = '\u000D'
-	Tab            = '\u0009'
+
+	// A tab is regarded as 4 space if conversion is needed
+	// More context required for https://spec.commonmark.org/0.30/#example-5
+	Tab = '\u0009'
 
 	// Unicode "Zs" category "Seprarator,Space" characters
 	Space                   = '\u0020'
