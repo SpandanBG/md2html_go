@@ -55,3 +55,21 @@ func SplitByLines(wholeContent string) []string {
 
 	return lines
 }
+
+// Returns true if a line is a blank line by markdown specs
+//
+// A line containing no characters, or a line containing only spaces (U+0020)
+// or tabs (U+0009), is a blank line
+func IsBlankLine(line string) bool {
+	if line == "" {
+		return true
+	}
+
+	for _, char := range line {
+		if char != Space && char != Tab {
+			return false
+		}
+	}
+
+	return true
+}

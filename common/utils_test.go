@@ -142,3 +142,43 @@ func TestSplitByLines(t *testing.T) {
 		})
 	}
 }
+
+func TestIsBlankLine(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		input  string
+		output bool
+	}{
+		{
+			name:   "should return true for empty line as blank line",
+			input:  "",
+			output: true,
+		},
+		{
+			name:   "should return true for line with just spaces as blank line",
+			input:  fmt.Sprintf("%c%c", Space, Space),
+			output: true,
+		},
+		{
+			name:   "should return true for line with just tabs as blank line",
+			input:  fmt.Sprintf("%c%c", Tab, Tab),
+			output: true,
+		},
+		{
+			name:   "should return true for line with space and tab as blank line",
+			input:  fmt.Sprintf("%c%c", Space, Tab),
+			output: true,
+		},
+		{
+			name:   "should return false for line with some character as blank line",
+			input:  "asdf",
+			output: false,
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			actualOutput := IsBlankLine(test.input)
+
+			isEqual[bool](t, test.output, actualOutput)
+		})
+	}
+}
