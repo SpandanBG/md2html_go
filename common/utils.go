@@ -114,7 +114,7 @@ func SecureNullChar(content string) string {
 	return s.String()
 }
 
-// Returns `true` if the character is a ASCII Punctuation Character
+// Returns `true` if the character is an ASCII Punctuation Character
 //
 // The ASCII ranges are from U+0021–2F, U+003A–0040, U+005B–0060, U+007B–007E
 func IsASCIIPunctuationCharacter(char rune) bool {
