@@ -163,6 +163,8 @@ func EscBackslashed(line string) string {
 				s.WriteRune(char)
 			}
 			prevCharEscChar = false
+		} else {
+			s.WriteRune(char)
 		}
 	}
 

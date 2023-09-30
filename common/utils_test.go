@@ -407,6 +407,11 @@ func TestEscapeBackslashedCharacters(t *testing.T) {
 			input:  "\\\t\\A\\a\\ \\3\\φ\\«",
 			output: "\\\t\\A\\a\\ \\3\\φ\\«",
 		},
+		{
+			name:   "should return input itself",
+			input:  "asdf",
+			output: "asdf",
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			result := EscBackslashed(test.input)

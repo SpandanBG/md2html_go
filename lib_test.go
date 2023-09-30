@@ -52,6 +52,16 @@ func TestNewMarkdown(t *testing.T) {
 				MDTokens:     []rune{},
 			},
 		},
+		{
+			name:  "should escape backslashed characters",
+			input: string([]rune{'a', '\\', '&', common.Null}),
+			output: common.MDRanges{
+				RawMD:        []rune{'a', '&', 'a', 'm', 'p', ';', common.ReplacementCha},
+				StartIndices: []int{},
+				EndIndices:   []int{},
+				MDTokens:     []rune{},
+			},
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			actualOutput := NewMarkdown(test.input)
