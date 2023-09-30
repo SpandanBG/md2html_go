@@ -42,11 +42,6 @@ func TestEscapeRawToHTML(t *testing.T) {
 			output: "&quot;",
 		},
 		{
-			name:   "should turn ' to &#39;",
-			input:  '\'',
-			output: "&#39;",
-		},
-		{
 			name:   "should turn < to &lt;",
 			input:  '<',
 			output: "&lt;",
@@ -387,6 +382,36 @@ func TestIsASCIIPunctuationCharacter(t *testing.T) {
 			actualOutput := IsASCIIPunctuationCharacter(test.input)
 
 			isEqual[bool](t, test.output, actualOutput)
+		})
+	}
+}
+
+func TestEscapeBackslashedCharacters(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		input  string
+		output string
+	}{
+		{
+			name:   "should escape ASCII Punctuations",
+			input:  "\\!\\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\`\\{\\|\\}\\~",
+			output: "!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~",
+		},
+		{
+			name:   "should not escape charcters other than ASCII Punctuations",
+			input:  "\\\t\\A\\a\\ \\3\\φ\\«",
+			output: "\\\t\\A\\a\\ \\3\\φ\\«",
+		},
+		{
+			name:   "should not escape charcters other than ASCII Punctuations",
+			input:  "\\\t\\A\\a\\ \\3\\φ\\«",
+			output: "\\\t\\A\\a\\ \\3\\φ\\«",
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			result := EscBackslashed(test.input)
+
+			isEqual[string](t, test.output, result)
 		})
 	}
 }

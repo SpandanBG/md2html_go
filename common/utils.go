@@ -2,14 +2,15 @@ package common
 
 import "strings"
 
+// Escapes the escapable character to their respective escaped HTML equivalent
+//
+// This includes the characters [&, ", <, >]
 func EscapeRawToHTML(char rune) []rune {
 	switch char {
 	case '&':
 		return []rune{'&', 'a', 'm', 'p', ';'}
 	case '"':
 		return []rune{'&', 'q', 'u', 'o', 't', ';'}
-	case '\'':
-		return []rune{'&', '#', '3', '9', ';'}
 	case '<':
 		return []rune{'&', 'l', 't', ';'}
 	case '>':
@@ -22,7 +23,8 @@ func EscapeRawToHTML(char rune) []rune {
 // Split the string into multiple lines
 //
 // A `line` is a sequence of zero or more `characters` other than line feed
-// (U+000A) or carriage rturn (U+000D), followed by a `line_ending`
+// (U+000A) or carriage return (U+000D), followed by a `line_ending`
+//
 // A `line_ending` is a line feed (U+000A), a carriage return (U+000A) followed
 // with or without a line feed.
 func SplitByLines(wholeContent string) []string {
@@ -135,4 +137,34 @@ func IsASCIIPunctuationCharacter(char rune) bool {
 	}
 
 	return false
+}
+
+// Escapes ASCII punctuations if backslash escaped
+//
+// The backslash esc character '\', escapes all ASCII punctuations
+// Before other characters, the esc character is treated as literal backslashes
+// Escaped characters are treated as regular characters and do not have their
+// usual Markdown meanings
+func EscBackslashed(line string) string {
+	var s strings.Builder
+
+	prevCharEscChar := false
+	for _, char := range line {
+		if char == EscChar && !prevCharEscChar {
+			prevCharEscChar = true
+			continue
+		}
+
+		if prevCharEscChar {
+			if IsASCIIPunctuationCharacter(char) {
+				s.WriteString(string(EscapeRawToHTML(char)))
+			} else {
+				s.WriteRune(EscChar)
+				s.WriteRune(char)
+			}
+			prevCharEscChar = false
+		}
+	}
+
+	return s.String()
 }
